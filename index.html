@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Speed Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border: 10px solid rgba(255, 255, 255, 0.2);
+            border-top: 10px solid #4caf50;
+            border-right: 10px solid #2196f3;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        .circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info {
+            font-size: 20px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info div {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #4caf50, #2196f3);
+            border: none;
+            color: white;
+            font-size: 20px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .start-button:active {
+            transform: scale(1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circle" id="loading-circle"></div>
+        <div class="info">
+            <div>Ping: <span id="ping">--</span> ms</div>
+            <div>Jitter: <span id="jitter">--</span> ms</div>
+            <div>Download: <span id="download">--</span> Mbps</div>
+            <div>Upload: <span id="upload">--</span> Mbps</div>
+        </div>
+        <button class="start-button" onclick="startSpeedTest()">شروع تست</button>
+    </div>
+
+    <script>
+        function mockSpeedTest() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        ping: (Math.random() * 50).toFixed(2),
+                        jitter: (Math.random() * 10).toFixed(2),
+                        download: (Math.random() * 800 + 150).toFixed(2),
+                        upload: (Math.random() * 150 + 210).toFixed(2),
+                    });
+                }, 3000);
+            });
+        }
+
+        async function startSpeedTest() {
+            const ping = document.getElementById('ping');
+            const jitter = document.getElementById('jitter');
+            const download = document.getElementById('download');
+            const upload = document.getElementById('upload');
+            const loadingCircle = document.getElementById('loading-circle');
+
+            loadingCircle.style.animationPlayState = 'running';
+
+            ping.textContent = '--';
+            jitter.textContent = '--';
+            download.textContent = '--';
+            upload.textContent = '--';
+
+            const results = await mockSpeedTest();
+
+            ping.textContent = results.ping;
+            jitter.textContent = results.jitter;
+            download.textContent = results.download;
+            upload.textContent = results.upload;
+
+            loadingCircle.style.animationPlayState = 'paused';
+        }
+    </script>
+</body>
+</html>
